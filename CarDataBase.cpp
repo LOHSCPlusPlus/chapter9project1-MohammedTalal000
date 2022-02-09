@@ -13,14 +13,16 @@ struct CarType {
   double Weight;
   double Acceleration;
   int Model;
-  char Origin;
+  char Origin[MAX_CHAR_LEN];
   bool ValidEntry;
   CarType();
 
 };
 
 CarType::CarType() {
-  Car_Name = {'\0'};
+  for (int index = 0; index < MAX_CHAR_LEN; index++) {
+      Car_Name[index] = '\0';
+  }
   MPG = 0;
   Cylinders = 0;
   Displacement = 0;
@@ -28,23 +30,155 @@ CarType::CarType() {
   Weight = 0;
   Acceleration = 0;
   Model = 0;
-  Origin = ' ';
+  for (int index = 0; index < MAX_CHAR_LEN; index++) {
+    Origin[index] = '\0';
+  }
   ValidEntry = false;
 }
 
+void addCar(CarType listCar[]) {
+  for(int index = 0; index < 499; index++) {
+    if(listCar[index].ValidEntry == false) {
+      cout << "Enter the car's name: ";
+      cin.ignore();
+      cin.getline(listCar[index].Car_Name, 100);
+      cout << endl << "Enter the MPG: ";
+      cin >> listCar[index].MPG;
+      while (!cin) {
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Invalid Data!" << endl;
+        cout << "Enter again: ";
+        cin >> listCar[index].MPG;
+      }
+      cout << endl << "Enter Cylinders: ";
+      cin >> listCar[index].Cylinders;
+      while (!cin) {
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Invalid Data!" << endl;
+        cout << "Enter again: ";
+        cin >> listCar[index].Cylinders;
+      }
+      cout << endl << "Enter the Displacement: ";
+      cin >> listCar[index].Displacement;
+      while (!cin) {
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Invalid Data!" << endl;
+        cout << "Enter again: ";
+        cin >> listCar[index].Displacement;
+      }
+      cout << endl << "Enter the Horsepower: ";
+      cin >> listCar[index].Horsepower;
+      while (!cin) {
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Invalid Data!" << endl;
+        cout << "Enter again: ";
+        cin >> listCar[index].Horsepower;
+      }
+      cout << endl << "Enter the Weight: ";
+      cin >> listCar[index].Weight;
+      while (!cin) {
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Invalid Data!" << endl;
+        cout << "Enter again: ";
+        cin >> listCar[index].Weight;
+      }
+      cout << endl << "Enter the Acceleration: ";
+      cin >> listCar[index].Acceleration;
+      while (!cin) {
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Invalid Data!" << endl;
+        cout << "Enter again: ";
+        cin >> listCar[index].Acceleration;
+      }
+      cout << endl << "Enter the Model: ";
+      cin >> listCar[index].Model;
+      while (!cin) {
+        cin.clear();
+        cin.ignore(1000,'\n');
+        cout << "Invalid Data!" << endl;
+        cout << "Enter again: ";
+        cin >> listCar[index].Model;
+      }
+      cout << endl << "Enter the Origin: ";
+      cin.ignore();
+      cin.getline(listCar[index].Origin, 100);
+      listCar[index].ValidEntry = true;
+      break; 
+    }
+  }
+}
 
-// void printCars(int num, listCar[]) {
 
-//   for(int counter = 0; counter < num; counter++) {
+void removeCar(CarType listCar[]) {
+  int index = 0;
+  cout << "Enter the index you want to remove: ";
+  cin >> index;
+  while (!cin || listCar[index].ValidEntry == false) {
+    cin.clear();
+    cin.ignore(1000,'\n');
+    cout << "Invalid Data!" << endl;
+    cout << "Enter the index you want to remove: ";
+    cin >> index;
+  }
+  listCar[index].ValidEntry = false;
+}
 
-//   }
 
-// }
+void printCarsbyOrigin(int numCar, CarType listCar[500]){
+
+  char selecOrigin[100];
+  for (int index = 0; index < 100; index++) {
+    selecOrigin[index] = '\0';
+  }
+  cout << "Please enter the specific Origin: ";
+  cin.ignore();
+  cin.getline(selecOrigin, 100);
+
+  for(int counter = 0; counter < numCar; counter++) {
+    if (listCar[counter].ValidEntry == true) {
+      if (listCar[counter].Origin == selecOrigin) {
+      cout << "Index " << counter << ": ";
+      cout << listCar[counter].Car_Name << ";" << listCar[counter].MPG << ";" << listCar[counter].Cylinders << ";" << listCar[counter].Displacement << ";" << listCar[counter].Horsepower << ";" << listCar[counter].Weight << ";" << listCar[counter].Acceleration << ";" << listCar[counter].Model << ";" << listCar[counter].Origin;
+      }
+      else {
+        continue;
+      }
+    }
+    else {
+      cout << endl;
+      continue;
+    }
+    cout << endl;
+  }
+}
+
+
+
+void printCars(int num, CarType listCar[500]) {
+  for(int counter = 0; counter < 5; counter++) {
+    if (listCar[counter].ValidEntry == true) {
+      cout << "Index " << counter << ": ";
+      cout << listCar[counter].Car_Name << ";" << listCar[counter].MPG << ";" << listCar[counter].Cylinders << ";" << listCar[counter].Displacement << ";" << listCar[counter].Horsepower << ";" << listCar[counter].Weight << ";" << listCar[counter].Acceleration << ";" << listCar[counter].Model << ";" << listCar[counter].Origin;
+    }
+    else {
+      cout << endl;
+      continue;
+    }
+    cout << endl;
+  }
+
+}
 
 
 CarType readCar(ifstream &inFile){
     CarType car; 
-    inFile.get(car.Car_Name, ';');
+    inFile.get(car.Car_Name, CarType::MAX_CHAR_LEN, ';');
     inFile.ignore(100,';');
     inFile >> car.MPG;
     inFile.ignore(100,';');
@@ -60,10 +194,10 @@ CarType readCar(ifstream &inFile){
     inFile.ignore(100,';');
     inFile >> car.Model;
     inFile.ignore(100,';');
-    inFile >> car.Origin;
-    inFile.ignore(100,';');
+    inFile.get(car.Origin, ';');
+    inFile.ignore(100,'\n');
     car.ValidEntry = true;
-    // If we reached the end of the file while reading, then the entry is not valid
+
     car.ValidEntry = !inFile.eof();
     return car;
 }
@@ -72,7 +206,7 @@ CarType readCar(ifstream &inFile){
 int readCarData(CarType listCar[500]){
   ifstream carFile("cars.txt");
   int numCars = 0;
-  while(carFile.peek() != EOF && numCars < 500) {
+  while(carFile.peek() != EOF && numCars < 499) {
       listCar[numCars] = readCar(carFile);
       numCars++;
   }
@@ -83,7 +217,15 @@ int readCarData(CarType listCar[500]){
 
 int main(){
   CarType listCar[500];
-  int num = readCarData(listCar[500]);
+  int num = readCarData(listCar);
+  printCars(num,listCar);
+  printCarsbyOrigin(num,listCar);
+  // removeCar(listCar);
+  // printCars(num,listCar);
+  // removeCar(listCar);
+  // printCars(num,listCar);
+  // addCar(listCar);
+  // printCars(num,listCar);
   // displayMenu();
 
 

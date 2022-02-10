@@ -36,6 +36,7 @@ CarType::CarType() {
   }
   ValidEntry = false;
 }
+// Validates if user input is a double
 double validDouble(double num) {
   while (!cin) {
     cin.clear();
@@ -46,7 +47,7 @@ double validDouble(double num) {
   }
   return num;
 }
-
+// Validates if user input is a int
 int validInt(int num) {
   while (!cin) {
     cin.clear();
@@ -57,9 +58,9 @@ int validInt(int num) {
   }
   return num;
 }
-
+// Checks is there is space then asks user for info of the car.
 void addCar(CarType listCar[]) {
-  for(int index = 0; index < 499; index++) {
+  for(int index = 0; index < 500; index++) {
     if(listCar[index].ValidEntry == false) {
       cout << "Enter the car's name: ";
       cin.ignore();
@@ -94,7 +95,7 @@ void addCar(CarType listCar[]) {
   }
 }
 
-
+// asks user for index to remove and does so.
 void removeCar(CarType listCar[]) {
   int index = 0;
   cout << "Enter the index you want to remove: ";
@@ -109,14 +110,15 @@ void removeCar(CarType listCar[]) {
   listCar[index].ValidEntry = false;
 }
 
-
+// asks user for origin to search by and does so
 void printCarsbyOrigin(int num, CarType listCar[500]){
   char selecOrigin[100];
   for (int index = 0; index < 100; index++) {
     selecOrigin[index] = '\0';
   }
   cout << "Please enter the specific Origin: ";
-  cin.getline(selecOrigin, 100, '\n');
+  cin.ignore();
+  cin.getline(selecOrigin, 100);
   cout << endl;
 
   for(int counter = 0; counter < num; counter++) {
@@ -133,7 +135,7 @@ void printCarsbyOrigin(int num, CarType listCar[500]){
 }
 
 
-
+// displays all the cars in the list.
 void printCars(int num, CarType listCar[500]) {
   for(int counter = 0; counter < num; counter++) {
     if (listCar[counter].ValidEntry == true) {
@@ -149,7 +151,7 @@ void printCars(int num, CarType listCar[500]) {
 
 }
 
-
+// fills the array witht he info of the cars.
 CarType readCar(ifstream &inFile){
     CarType car; 
     inFile.get(car.Car_Name, CarType::MAX_CHAR_LEN, ';');
@@ -176,7 +178,7 @@ CarType readCar(ifstream &inFile){
     return car;
 }
 
-
+// loops throught the different elements of the array to fill in the info
 int readCarData(CarType listCar[500]){
   ifstream carFile("cars.txt");
   int numCars = 0;
@@ -186,7 +188,7 @@ int readCarData(CarType listCar[500]){
   }
   return numCars;
 }
-
+// diplays menu for user to choose from
 void displayMenu(CarType listCar[], int num){
   int option = 0;
   while (option != 5) {
@@ -219,11 +221,10 @@ void displayMenu(CarType listCar[], int num){
     }
   }
 }
-
+// calls displayMenu and starts the whole program.
 int main(){
   CarType listCar[500];
   int num = readCarData(listCar);
-  // printCarsbyOrigin(num, listCar);
   displayMenu(listCar, num);
 
 

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string.h>
 #include <fstream>
 using namespace std;
 
@@ -35,6 +36,27 @@ CarType::CarType() {
   }
   ValidEntry = false;
 }
+double validDouble(double num) {
+  while (!cin) {
+    cin.clear();
+    cin.ignore(1000,'\n');
+    cout << "Invalid Data!" << endl;
+    cout << "Enter again: ";
+    cin >> num;
+  }
+  return num;
+}
+
+int validInt(int num) {
+  while (!cin) {
+    cin.clear();
+    cin.ignore(1000,'\n');
+    cout << "Invalid Data!" << endl;
+    cout << "Enter again: ";
+    cin >> num;
+  }
+  return num;
+}
 
 void addCar(CarType listCar[]) {
   for(int index = 0; index < 499; index++) {
@@ -44,67 +66,25 @@ void addCar(CarType listCar[]) {
       cin.getline(listCar[index].Car_Name, 100);
       cout << endl << "Enter the MPG: ";
       cin >> listCar[index].MPG;
-      while (!cin) {
-        cin.clear();
-        cin.ignore(1000,'\n');
-        cout << "Invalid Data!" << endl;
-        cout << "Enter again: ";
-        cin >> listCar[index].MPG;
-      }
+      listCar[index].MPG = validDouble(listCar[index].MPG);
       cout << endl << "Enter Cylinders: ";
       cin >> listCar[index].Cylinders;
-      while (!cin) {
-        cin.clear();
-        cin.ignore(1000,'\n');
-        cout << "Invalid Data!" << endl;
-        cout << "Enter again: ";
-        cin >> listCar[index].Cylinders;
-      }
+      listCar[index].Cylinders = validInt(listCar[index].Cylinders);
       cout << endl << "Enter the Displacement: ";
       cin >> listCar[index].Displacement;
-      while (!cin) {
-        cin.clear();
-        cin.ignore(1000,'\n');
-        cout << "Invalid Data!" << endl;
-        cout << "Enter again: ";
-        cin >> listCar[index].Displacement;
-      }
+      listCar[index].Displacement = validDouble(listCar[index].Displacement);
       cout << endl << "Enter the Horsepower: ";
       cin >> listCar[index].Horsepower;
-      while (!cin) {
-        cin.clear();
-        cin.ignore(1000,'\n');
-        cout << "Invalid Data!" << endl;
-        cout << "Enter again: ";
-        cin >> listCar[index].Horsepower;
-      }
+      listCar[index].Horsepower = validDouble(listCar[index].Horsepower);
       cout << endl << "Enter the Weight: ";
       cin >> listCar[index].Weight;
-      while (!cin) {
-        cin.clear();
-        cin.ignore(1000,'\n');
-        cout << "Invalid Data!" << endl;
-        cout << "Enter again: ";
-        cin >> listCar[index].Weight;
-      }
+      listCar[index].Weight = validDouble(listCar[index].Weight);
       cout << endl << "Enter the Acceleration: ";
       cin >> listCar[index].Acceleration;
-      while (!cin) {
-        cin.clear();
-        cin.ignore(1000,'\n');
-        cout << "Invalid Data!" << endl;
-        cout << "Enter again: ";
-        cin >> listCar[index].Acceleration;
-      }
+      listCar[index].Acceleration = validDouble(listCar[index].Acceleration);
       cout << endl << "Enter the Model: ";
       cin >> listCar[index].Model;
-      while (!cin) {
-        cin.clear();
-        cin.ignore(1000,'\n');
-        cout << "Invalid Data!" << endl;
-        cout << "Enter again: ";
-        cin >> listCar[index].Model;
-      }
+      listCar[index].Model = validInt(listCar[index].Model);
       cout << endl << "Enter the Origin: ";
       cin.ignore();
       cin.getline(listCar[index].Origin, 100);
@@ -130,38 +110,32 @@ void removeCar(CarType listCar[]) {
 }
 
 
-void printCarsbyOrigin(int numCar, CarType listCar[500]){
-
+void printCarsbyOrigin(int num, CarType listCar[500]){
   char selecOrigin[100];
   for (int index = 0; index < 100; index++) {
     selecOrigin[index] = '\0';
   }
   cout << "Please enter the specific Origin: ";
-  cin.ignore();
-  cin.getline(selecOrigin, 100);
+  cin.getline(selecOrigin, 100, '\n');
+  cout << endl;
 
-  for(int counter = 0; counter < numCar; counter++) {
+  for(int counter = 0; counter < num; counter++) {
     if (listCar[counter].ValidEntry == true) {
-      if (listCar[counter].Origin == selecOrigin) {
-      cout << "Index " << counter << ": ";
-      cout << listCar[counter].Car_Name << ";" << listCar[counter].MPG << ";" << listCar[counter].Cylinders << ";" << listCar[counter].Displacement << ";" << listCar[counter].Horsepower << ";" << listCar[counter].Weight << ";" << listCar[counter].Acceleration << ";" << listCar[counter].Model << ";" << listCar[counter].Origin;
-      }
-      else {
-        continue;
+      if (strcmp(listCar[counter].Origin,selecOrigin) == 0) {
+        cout << "Index " << counter << ": ";
+        cout << listCar[counter].Car_Name << ";" << listCar[counter].MPG << ";" << listCar[counter].Cylinders << ";" << listCar[counter].Displacement << ";" << listCar[counter].Horsepower << ";" << listCar[counter].Weight << ";" << listCar[counter].Acceleration << ";" << listCar[counter].Model << ";" << listCar[counter].Origin << endl;
       }
     }
     else {
       cout << endl;
-      continue;
     }
-    cout << endl;
   }
 }
 
 
 
 void printCars(int num, CarType listCar[500]) {
-  for(int counter = 0; counter < 5; counter++) {
+  for(int counter = 0; counter < num; counter++) {
     if (listCar[counter].ValidEntry == true) {
       cout << "Index " << counter << ": ";
       cout << listCar[counter].Car_Name << ";" << listCar[counter].MPG << ";" << listCar[counter].Cylinders << ";" << listCar[counter].Displacement << ";" << listCar[counter].Horsepower << ";" << listCar[counter].Weight << ";" << listCar[counter].Acceleration << ";" << listCar[counter].Model << ";" << listCar[counter].Origin;
@@ -213,20 +187,44 @@ int readCarData(CarType listCar[500]){
   return numCars;
 }
 
-
+void displayMenu(CarType listCar[], int num){
+  int option = 0;
+  while (option != 5) {
+    cout << endl << "1: Display the car list" << endl;
+    cout << "2: Remove a car from the list" << endl;
+    cout << "3: Add a car to the list" << endl;
+    cout << "4: Display cars by origin" << endl;
+    cout << "5: Quit" << endl;
+    cout << "Enter an option: ";
+    cin >> option;
+    option = validInt(option);
+  
+    if(option == 1) {
+      printCars(num, listCar);
+    }
+    else if (option == 2) {
+      removeCar(listCar);
+    }
+    else if (option == 3) {
+     addCar(listCar);
+    }
+    else if (option == 4) {
+      printCarsbyOrigin(num, listCar);
+    }
+    else if (option == 5) {
+      break;
+    }
+    else {
+      cout << "Invalid option!!" << endl;
+    }
+  }
+}
 
 int main(){
   CarType listCar[500];
   int num = readCarData(listCar);
-  printCars(num,listCar);
-  printCarsbyOrigin(num,listCar);
-  // removeCar(listCar);
-  // printCars(num,listCar);
-  // removeCar(listCar);
-  // printCars(num,listCar);
-  // addCar(listCar);
-  // printCars(num,listCar);
-  // displayMenu();
+  // printCarsbyOrigin(num, listCar);
+  displayMenu(listCar, num);
 
 
 }
